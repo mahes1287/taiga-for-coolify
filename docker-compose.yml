@@ -36,6 +36,7 @@ x-volumes: &default-back-volumes
 services:
   taiga-db:
     image: elestio/postgres:15
+    user: "root"
     restart: always
     environment:
       POSTGRES_DB: taiga
@@ -50,6 +51,7 @@ services:
 
   taiga-back:
     image: elestio/taiga-backend:${SOFTWARE_VERSION_TAG}
+    user: "root"
     restart: always
     environment: *default-back-environment
     volumes: *default-back-volumes
@@ -62,6 +64,7 @@ services:
 
   taiga-async:
     image: elestio/taiga-backend:${SOFTWARE_VERSION_TAG}
+    user: "root"
     restart: always
     entrypoint: ["/taiga-back/docker/async_entrypoint.sh"]
     environment: *default-back-environment
@@ -75,6 +78,7 @@ services:
 
   taiga-async-rabbitmq:
     image: rabbitmq:3.8-management-alpine
+    user: "root"
     restart: always
     hostname: "taiga-async-rabbitmq"
     environment:
@@ -89,6 +93,7 @@ services:
 
   taiga-front:
     image: elestio/taiga-frontend:${SOFTWARE_VERSION_TAG}
+    user: "root"
     restart: always
     environment:
       TAIGA_URL: ${BASE_URL}
@@ -102,6 +107,7 @@ services:
 
   taiga-events:
     image: elestio/taiga-event:${SOFTWARE_VERSION_TAG}
+    user: "root"
     restart: always
     environment:
       RABBITMQ_USER: taiga
@@ -114,6 +120,7 @@ services:
 
   taiga-events-rabbitmq:
     image: rabbitmq:3.8-management-alpine
+    user: "root"
     restart: always
     hostname: "taiga-events-rabbitmq"
     environment:
@@ -128,6 +135,7 @@ services:
 
   taiga-protected:
     image: elestio/taiga-protected:${SOFTWARE_VERSION_TAG}
+    user: "root"
     restart: always
     environment:
       MAX_AGE: 360
@@ -137,6 +145,7 @@ services:
 
   taiga-gateway:
     image: nginx:1.19-alpine
+    user: "root"
     restart: always
     ports:
       - "172.17.0.1:9000:80"
@@ -153,6 +162,7 @@ services:
 
   pgadmin:
     image: elestio/pgadmin:latest
+    user: "root"
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: ${ADMIN_EMAIL}
